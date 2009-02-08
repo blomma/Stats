@@ -1,0 +1,5 @@
+## Interface: 30000
+## Title: Stats
+## Author: Blomma
+## Notes: xp, fps, mb usage, time, latency
+core.lua
