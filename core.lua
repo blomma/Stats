@@ -41,6 +41,9 @@ local CalculateXp = function()
 	end		
 end
 
+local InCombatLockdown = InCombatLockdown
+local GetFramerate = GetFramerate
+local GetNetStats = GetNetStats
 local OnUpdate = function(self, elapsed)
 	update = update + elapsed
 	slowupdate = slowupdate + elapsed
@@ -114,6 +117,16 @@ local OnLeave = function()
 	end 
 end
 
+local OnClick = function(self, button)
+	if button == "LeftButton" then
+		if IsShiftKeyDown() then
+			ToggleCalendar()
+		else
+			ToggleTimeManager()
+		end
+	end
+end
+
 text = addon:CreateFontString(nil, "OVERLAY")
 text:SetFont("Fonts\\ARIALN.TTF", 12, nil)
 text:SetShadowOffset(1,-1)
@@ -123,6 +136,7 @@ text:SetPoint("BOTTOMRIGHT", addon)
 addon:SetScript("OnUpdate", OnUpdate)
 addon:SetScript("OnEnter", OnEnter)
 addon:SetScript("OnLeave", OnLeave)
+addon:SetScript("OnClick", OnClick)
 
 addon:SetWidth(50)
 addon:SetHeight(13)
