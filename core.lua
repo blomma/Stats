@@ -20,7 +20,6 @@ local playerLevel = UnitLevel("player")
 local addoncount = 50
 local update, slowupdate = 1,60
 local addons= {}
-local InCombatLockdown = InCombatLockdown
 local GetFramerate = GetFramerate
 local GetNetStats = GetNetStats
 
@@ -50,7 +49,7 @@ end
 local OnUpdate = function(self, elapsed)
 	update = update + elapsed
 	slowupdate = slowupdate + elapsed
-	if not InCombatLockdown() and slowupdate > 60 then
+	if slowupdate > 60 then
 		mem = "|c00ffffff"..floor(collectgarbage("count") / 1024).."|rmb  "
 		slowupdate = 0
 	end
