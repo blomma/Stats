@@ -2,21 +2,27 @@
 
 	Stats
 
-	Author:		Blomma
+	Author:		Fleetfoot
 	Mail:		blomma@gmail.com
 
-	Credits:	evl and his awesome evl_clock to get lynstats "ace-less"
+	Credits:	lynstats
+	
+	This is a recode of lynstats to my liking.
 
 --]]
 local addon = CreateFrame("Button", "LynStats", UIParent)
 
-local classcolors = true
+local print = function(a) ChatFrame1:AddMessage("|cff33ff99Stats:|r "..tostring(a)) end
 
+local classcolors = true
 local color, time, lag, fps, xp, text, addonmem, totalmem, memory, entry, mem
 local playerLevel = UnitLevel("player")
 local addoncount = 50
 local update, slowupdate = 1,60
 local addons= {}
+local InCombatLockdown = InCombatLockdown
+local GetFramerate = GetFramerate
+local GetNetStats = GetNetStats
 
 if classcolors == true then
 	color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
@@ -41,9 +47,6 @@ local CalculateXp = function()
 	end		
 end
 
-local InCombatLockdown = InCombatLockdown
-local GetFramerate = GetFramerate
-local GetNetStats = GetNetStats
 local OnUpdate = function(self, elapsed)
 	update = update + elapsed
 	slowupdate = slowupdate + elapsed
@@ -127,21 +130,22 @@ local OnClick = function(self, button)
 	end
 end
 
+
 text = addon:CreateFontString(nil, "OVERLAY")
 text:SetFont("Fonts\\ARIALN.TTF", 12, nil)
 text:SetShadowOffset(1,-1)
 text:SetTextColor(color.r, color.g, color.b)
 text:SetPoint("BOTTOMRIGHT", addon)
 
-addon:SetScript("OnUpdate", OnUpdate)
-addon:SetScript("OnEnter", OnEnter)
-addon:SetScript("OnLeave", OnLeave)
-addon:SetScript("OnClick", OnClick)
-
 addon:SetWidth(50)
 addon:SetHeight(13)
 
 addon:SetPoint("BOTTOMRIGHT", UIParent, "BOTTOMRIGHT", -10, 10)
+
+addon:SetScript("OnUpdate", OnUpdate)
+addon:SetScript("OnEnter", OnEnter)
+addon:SetScript("OnLeave", OnLeave)
+addon:SetScript("OnClick", OnClick)
 
 addon:RegisterEvent("PLAYER_LEVEL_UP")
 if playerLevel < MAX_PLAYER_LEVEL then
