@@ -15,7 +15,7 @@ local addon = CreateFrame("Button", "LynStats", UIParent)
 local print = function(a) ChatFrame1:AddMessage("|cff33ff99Stats:|r "..tostring(a)) end
 
 local classcolors = true
-local color, time, lag, fps, xp, text, addonmem, totalmem, memory, entry, mem
+local color, time, lag, fps, text, addonmem, totalmem, memory, entry, mem
 local playerLevel = UnitLevel("player")
 local addoncount = 50
 local update, slowupdate = 1,60
@@ -27,23 +27,6 @@ if classcolors == true then
 	color = RAID_CLASS_COLORS[select(2, UnitClass("player"))]
 else
 	color = { r=0, g=0.8, b=1 }
-end
-
-local OnEvent = function(self, event, level)
-	if event == "PLAYER_LEVEL_UP" then
-		playerLevel = level
-	elseif event == "PLAYER_XP_UPDATE" then
-		CalculateXp()
-	end
-end
-
-local CalculateXp = function()
-	xp = "|c00ffffff"..floor(UnitXPMax("player") - UnitXP("player")).."|r"
-	if GetXPExhaustion("player") ~= nil then	
-		xp = xp.."|c00ffffff(|r|c0000ccffR|r|c00ffffff)|rxp  "
-	else
-		xp = xp.."xp  "
-	end		
 end
 
 local OnUpdate = function(self, elapsed)
@@ -58,11 +41,7 @@ local OnUpdate = function(self, elapsed)
 		fps = "|c00ffffff"..floor(GetFramerate()).."|rfps  "
 		lag = "|c00ffffff"..select(3, GetNetStats()).."|rms  "
 
-		if playerLevel < MAX_PLAYER_LEVEL then
-			text:SetText(fps..lag..mem..xp..time)
-		else
-			text:SetText(fps..lag..mem..time)
-		end
+		text:SetText(fps..lag..mem..time)
 		
 		local width = text:GetStringWidth()/addon:GetEffectiveScale()
 		local height = text:GetStringHeight()/addon:GetEffectiveScale()
@@ -145,9 +124,3 @@ addon:SetScript("OnUpdate", OnUpdate)
 addon:SetScript("OnEnter", OnEnter)
 addon:SetScript("OnLeave", OnLeave)
 addon:SetScript("OnClick", OnClick)
-
-addon:RegisterEvent("PLAYER_LEVEL_UP")
-if playerLevel < MAX_PLAYER_LEVEL then
-	addon:RegisterEvent("PLAYER_XP_UPDATE")
-	CalculateXp()
-end
